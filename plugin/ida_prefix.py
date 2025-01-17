@@ -294,13 +294,15 @@ def bulk_prefix(ctx):
   # loop through all the functions selected in the 'Functions window' and
   # apply the user defined prefix tag to each one.
   for func_ea, func_name in get_selected_funcs(ctx):
+    real_name = idaapi.get_name(func_ea)
     # ignore functions that already have the specified prefix applied
-    if func_name.startswith(tag):
+    if func_name.startswith(tag) or real_name.startswith(tag):
       continue
 
     # apply the user defined prefix to the function (rename it)
-    new_name = '%s%s%s' % (str(tag), PREFIX_SEPARATOR, func_name)
-    idaapi.set_name(func_ea, new_name, idaapi.SN_FORCE)
+    new_name = '%s%s%s' % (str(tag), PREFIX_SEPARATOR, real_name)
+    if idaapi.set_name(func_ea, new_name, idaapi.SN_FORCE):
+      print(f"""idaapi.set_name({func_ea}, "{new_name}")""")
 
   # refresh the IDA views
   refresh_views()
