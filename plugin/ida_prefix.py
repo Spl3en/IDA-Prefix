@@ -302,7 +302,7 @@ def bulk_prefix(ctx):
     # apply the user defined prefix to the function (rename it)
     new_name = '%s%s%s' % (str(tag), PREFIX_SEPARATOR, real_name)
     if idaapi.set_name(func_ea, new_name, idaapi.SN_FORCE):
-      print(f"""idaapi.set_name({func_ea}, "{new_name}")""")
+      print(f"""idaapi.set_name({func_ea:X}, "{new_name}")""")
 
   # refresh the IDA views
   refresh_views()
